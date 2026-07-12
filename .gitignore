@@ -1,0 +1,41 @@
+.env*
+.env.example*
+# Ignore local postgres database data
+infrasturcture/docker/data/
+
+node_modules/
+# Node
+**/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Docker
+infrastructure/docker/data/
+
+# Next.js
+.next/
+out/
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
