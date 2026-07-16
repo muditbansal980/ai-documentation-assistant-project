@@ -8,6 +8,7 @@ from app.schemas.auth.register import UserRegisterSchema
 
 async def register_user(register_data: UserRegisterSchema):
     try: 
+        print("Registering user with data:", register_data)
         async with AsyncSessionLocal() as session:
             user = User(
                 Id = str(uuid.uuid4()),
