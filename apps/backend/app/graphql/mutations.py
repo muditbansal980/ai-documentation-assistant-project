@@ -1,9 +1,9 @@
 import strawberry
 from app.api.controllers.auth.register import login_user, register_user
-from app.graphql.types import RegisterUserInput
+from app.graphql.types import RegisterUserInput, UserLoginType
 from app.graphql.types import LoginUserInput
 from app.graphql.types import UserType
-from app.schemas.auth.register import UserRegisterSchema
+from app.schemas.auth.register import UserRegisterSchema,UserLoginSchema
 
 @strawberry.type
 class Mutation:
@@ -25,10 +25,10 @@ class Mutation:
             Email=register_data.Email,
             Password=register_data.Password,
         )
-    
-    async def LoginUser(self,input: LoginUserInput) -> UserType:
+    @strawberry.mutation
+    async def LoginUser(self,input: LoginUserInput) -> UserLoginType:
         print("LoginUser mutation called")
-        login_data = UserRegisterSchema(
+        login_data = UserLoginSchema(
             Email=input.Email,
             Password=input.Password,
         )
@@ -36,7 +36,7 @@ class Mutation:
         if "error" in result:
           raise Exception(result["error"])
       
-        return UserType(
+        return UserLoginType(
             Email=login_data.Email,
             Password=login_data.Password,
         )
