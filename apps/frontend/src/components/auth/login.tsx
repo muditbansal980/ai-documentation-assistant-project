@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoginUser } from "@/api/auth/auth";
 
-export default function Register(){
+function handleLogin(data: { Email: string; Password: string }) {
+    LoginUser(data).then((result)=>{
+        console.log("Final Result:", result)
+    })
+}
+export default function LoginForm(){
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,8 +29,16 @@ export default function Register(){
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
+            <button onClick={()=>{
+                handleLogin({
+                    Email: email,
+                    Password: password
+                })
+            }}>
+                Login
+            </button>
             <div>
-                <button onClick={() => router.push("/register")}>Don&apos;t have an account? Register</button>
+                <button onClick={() => router.push("/")}>Don&apos;t have an account? Register</button>
             </div>
         </div>
     )
