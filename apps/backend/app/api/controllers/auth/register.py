@@ -1,5 +1,5 @@
 import uuid 
-from sqlalchemy import text
+from sqlalchemy import select
 from app.db.session import AsyncSessionLocal
 from app.models.users.user import User
 from app.schemas.auth.login import UserLoginSchema
@@ -26,12 +26,18 @@ async def register_user(register_data: UserRegisterSchema):
 async def login_user(login_data: UserLoginSchema):
     try:
         logindata = login_data
+        print("Logging in user with data:", logindata)
         async with AsyncSessionLocal() as session:
-            select = select("User").where(User.Email == logindata.Email)
-            if(select is None):
+            query = await session.execute(
+            select(User).where(
+                User.Email == login_data.Email
+            )
+        )
+            user = query.scalar_one_or_none()
+            if(user is None):
                 return {"message": "No such user found"}
             else:
-                if(select.Password == logindata.Password):
+                if(user.Password == logindata.Password):
                     return {"message": "Login successful"}
                 else:
                     return {"message": "Incorrect password"}
