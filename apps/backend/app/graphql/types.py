@@ -20,3 +20,6 @@ class UserLoginType:
     Email: str
     Password: str  
 
+@strawberry.type
+class MessageResponse:
+    message: str
