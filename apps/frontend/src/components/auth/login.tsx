@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginUser } from "@/api/auth/auth";
 
-function handleLogin(data: { Email: string; Password: string }) {
+
+export function HandleLogin(data: { Email: string; Password: string }, router: ReturnType<typeof useRouter>) {
     LoginUser(data).then((result)=>{
         console.log("Final Result:", result)
+        router.push("/home");
     })
 }
 export default function LoginForm(){
@@ -30,10 +32,10 @@ export default function LoginForm(){
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={()=>{
-                handleLogin({
+                HandleLogin({
                     Email: email,
                     Password: password
-                })
+                }, router)
             }}>
                 Login
             </button>
