@@ -4,7 +4,8 @@ from app.graphql.types import RegisterUserInput, UserLoginType
 from app.graphql.types import LoginUserInput
 from app.graphql.types import UserType
 from app.schemas.auth.register import UserRegisterSchema,UserLoginSchema
-
+from strawberry.file_uploads import Upload
+from app.graphql.types import MessageResponse
 @strawberry.type
 class Mutation:
     @strawberry.mutation 
@@ -39,4 +40,16 @@ class Mutation:
         return UserLoginType(
             Email=login_data.Email,
             Password=login_data.Password,
+        )
+        
+    # upload file mutation
+    @strawberry.mutation
+    async def UploadFile(self,file:Upload) ->MessageResponse:
+        print("UploadFile mutation called")
+        print(file.filename)
+        path = f"uploads/{file.filename}"
+        with open(path, "wb") as f:
+            f.write(await file.read())
+        return MessageResponse(
+            message="File uploaded successfully."
         )
