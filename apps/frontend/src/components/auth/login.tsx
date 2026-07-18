@@ -6,12 +6,17 @@ import { LoginUser } from "@/api/auth/auth";
 
 
 export function HandleLogin(data: { Email: string; Password: string }, router: ReturnType<typeof useRouter>) {
-    LoginUser(data).then((result)=>{
-        console.log("Final Result:", result)
+    LoginUser(data).then((result) => {
+        if (result.data.LoginUser.authToken === "None") {
+            alert("Login failed");
+        }
+        if (result.data?.LoginUser?.authToken) {
+            localStorage.setItem("auth_token", result.data.LoginUser.authToken);
+        }
         router.push("/home");
     })
 }
-export default function LoginForm(){
+export default function LoginForm() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,19 +24,19 @@ export default function LoginForm(){
     return (
         <div>
             <h1>Login</h1>
-            <input 
-                type="email" 
-                placeholder="Email" 
+            <input
+                type="email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <input 
-                type="password" 
-                placeholder="Password" 
+            <input
+                type="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={()=>{
+            <button onClick={() => {
                 HandleLogin({
                     Email: email,
                     Password: password
