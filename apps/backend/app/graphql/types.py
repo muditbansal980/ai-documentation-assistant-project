@@ -19,6 +19,7 @@ class UserType:
 class UserLoginType:
     Email: str
     Password: str  
+    authToken: str = None  # Optional field for the auth token
 
 @strawberry.type
 class MessageResponse:
