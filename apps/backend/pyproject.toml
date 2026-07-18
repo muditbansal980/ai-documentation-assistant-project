@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.31.0",
     "fastapi>=0.138.1",
     "head>=1.0.0",
+    "langchain-text-splitters>=1.1.2",
     "migrate>=0.3.8",
     "psycopg2>=2.9.12",
     "psycopg[binary]>=3.3.4",
