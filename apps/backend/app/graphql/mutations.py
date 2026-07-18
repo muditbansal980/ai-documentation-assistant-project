@@ -34,6 +34,7 @@ class Mutation:
             Email=input.Email,
             Password=input.Password,
         )
+        #<--------------_ Call the login_user function from the controller_---------------------->
         result = await login_user(login_data)
         if "error" in result:
           raise Exception(result["error"])
@@ -41,12 +42,16 @@ class Mutation:
         return UserLoginType(
             Email=login_data.Email,
             Password=login_data.Password,
+            authToken=result.get("auth_token")
         )
         
     # upload file mutation
     @strawberry.mutation
-    async def UploadFile(self,file:Upload) ->MessageResponse:
-        controller = await UploadFile(file)
+    async def UploadFile(self,info:strawberry.Info,file:Upload) ->MessageResponse:
+        user = info.context["user"]
+        if not user:
+            raise Exception("Not authenticated")
+        controller = await UploadFile(file,user)
         return MessageResponse(
             message="File uploaded successfully."
         )
