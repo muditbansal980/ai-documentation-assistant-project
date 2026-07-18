@@ -61,7 +61,7 @@ class Mutation:
             return AuthError()  # uses default "Not authenticated" message
         controller = await UploadFile(file,user)
         if controller.error:
-           return AuthError(message=controller.error)
+           return AuthError(message=controller.error, statusCode=400)
         return MessageResponse(
             message="File uploaded successfully."
         )
