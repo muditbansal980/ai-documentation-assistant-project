@@ -7,6 +7,14 @@ export default function UploadFiles() {
     const uploadFile = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
+        if (!e.target.files || e.target.files.length === 0) {
+            console.log("No file selected");
+            return;
+        }
+        if(e.target.files[0].type !== "application/pdf") {
+            alert("Invalid file type. Please select a PDF file.");
+            return;
+        }
         console.log("onChange fired");
         const file = e.target.files?.[0];
 
@@ -23,7 +31,7 @@ export default function UploadFiles() {
 
     return (
         <div>
-            <input type="file" ref={fileInputRef} onChange={uploadFile} />
+            <input accept=".pdf,application/pdf" type="file" ref={fileInputRef} onChange={uploadFile} />
             <button onClick={() => fileInputRef.current?.click()}>
                 Upload
             </button>
