@@ -31,6 +31,7 @@ mutation LoginUser(
     ) {
         Email
         Password
+        authToken
     }
 } 
 `;
