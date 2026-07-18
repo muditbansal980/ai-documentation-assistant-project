@@ -9,9 +9,10 @@ async def UploadFile(file:Upload,user:dict):
     try:
         # Save the file metadata to the database
         content = await file.read()  # read once
+        documentId = str(uuid.uuid4())  # Generate a unique ID for the document
         async with AsyncSessionLocal() as session:
             document = Document(
-                Id = str(uuid.uuid4()),
+                Id = documentId,
                 UserId = user["sub"],  # Using the user ID from the decoded token
                 OriginalFileName = file.filename,
                 StoragePath = f"uploads/{file.filename}",
@@ -27,7 +28,7 @@ async def UploadFile(file:Upload,user:dict):
                 # f.write(await file.read())
                 f.write(content)  # write the content read earlier
             # Extract text from the uploaded PDF
-            extracted_text = await extract_pdf_text(path)
+            extracted_text = await extract_pdf_text(path, documentId)
             print(f"Extracted text from {file.filename}: {extracted_text}")
             return MessageResponse(
                 message="File uploaded successfully."
