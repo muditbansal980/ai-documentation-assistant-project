@@ -25,15 +25,26 @@ export async function UploadFile(file: File) {
     for (const [key, value] of formData.entries()) {
         console.log(key, value);
     }
+    const token = localStorage.getItem("auth_token");
     const response = await fetch(
         `${BACKEND_URL}/graphql`,
         {
             method: "POST",
             body: formData,
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         }
     );
 
     const result = await response.json();
+    if(result.data?.UploadFile?.__typename === "AuthError") {
+        if(result.data.UploadFile.statusCode === 401) {
+            alert("You are not authenticated. Please log in.");
+        } else {
+            alert(`Error: ${result.data.UploadFile.message}`);
+        }
+    }
     if (result.errors) {
         console.log("Error:", result.errors);
     }
