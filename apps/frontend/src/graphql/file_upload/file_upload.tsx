@@ -5,7 +5,14 @@ mutation UploadFile(
     UploadFile(
             file:$file
     ){
-        message
+          __typename
+        ... on MessageResponse {
+            message
+        }
+        ... on AuthError {
+            message
+            statusCode
+        }
     }
 }
 `
