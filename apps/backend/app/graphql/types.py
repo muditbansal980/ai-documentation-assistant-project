@@ -1,4 +1,10 @@
 import strawberry
+from typing import Optional
+
+@strawberry.type
+class AuthError:
+    message: str = "Not authenticated"
+    statusCode: int = 401  # Default status code for authentication errors    
 @strawberry.input
 class RegisterUserInput:
     Username: str
@@ -24,3 +30,5 @@ class UserLoginType:
 @strawberry.type
 class MessageResponse:
     message: str
+    error:Optional[str] = None # Optional field for error messages
+  # Optional field for error messages
