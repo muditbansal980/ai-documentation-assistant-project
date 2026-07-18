@@ -4,17 +4,17 @@ from app.db.session import AsyncSessionLocal
 from app.models.users.user import User
 from app.schemas.auth.login import UserLoginSchema
 from app.schemas.auth.register import UserRegisterSchema
-
+from pwdlib import PasswordHash
 
 async def register_user(register_data: UserRegisterSchema):
     try: 
-        print("Registering user with data:", register_data)
+        password_hash = PasswordHash.recommended()
         async with AsyncSessionLocal() as session:
             user = User(
                 Id = str(uuid.uuid4()),
                 Username = register_data.Username,
                 Email = register_data.Email,
-                Password = register_data.Password
+                Password = password_hash.hash(register_data.Password)
             )
             session.add(user)
             await session.commit()
@@ -26,6 +26,7 @@ async def register_user(register_data: UserRegisterSchema):
 async def login_user(login_data: UserLoginSchema):
     try:
         logindata = login_data
+        password_hash = PasswordHash.recommended()
         print("Logging in user with data:", logindata)
         async with AsyncSessionLocal() as session:
             query = await session.execute(
@@ -37,7 +38,7 @@ async def login_user(login_data: UserLoginSchema):
             if(user is None):
                 return {"message": "No such user found"}
             else:
-                if(user.Password == logindata.Password):
+                if(password_hash.verify(login_data.Password, user.Password)):
                     return {"message": "Login successful"}
                 else:
                     return {"message": "Incorrect password"}
