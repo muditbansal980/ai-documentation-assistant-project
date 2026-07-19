@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Integer, String
 from app.db.base import Base
 import uuid
+from pgvector.sqlalchemy import Vector 
 
 class DocumentChunks(Base):
     __tablename__ = "DocumentChunks"
@@ -12,3 +13,4 @@ class DocumentChunks(Base):
     PageNumber: Mapped[int] = mapped_column(Integer, nullable=False)
     ChunkNumber: Mapped[int] = mapped_column(Integer, nullable=False)
     ChunkText: Mapped[str] = mapped_column(String, nullable=False)
+    Embedding = mapped_column(Vector(384), nullable=True) 
