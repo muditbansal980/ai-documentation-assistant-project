@@ -27,9 +27,10 @@ async def extract_pdf_text(path: str, document_id: str):
                 {
                     "page": page_number + 1,
                     "chunk_number": index,
-                    "text": chunk
+                    "text": chunk,
+                    "document_id": document_id
                 }
             )
     await save_chunks_to_database(document_id=document_id, chunks=all_chunks)
-    embeddings_gen(all_chunks)
+    await embeddings_gen(all_chunks)
     return {"pages": pages, "chunks": all_chunks}
