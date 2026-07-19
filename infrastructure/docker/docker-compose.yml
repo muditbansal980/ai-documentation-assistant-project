@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: pgvector/pgvector:pg17
 
     container_name: aidocumentassistant-postgres
 
@@ -19,6 +19,8 @@ services:
 
     networks:
       - aidocumentassistant-network
+
+  
 
 networks:
   aidocumentassistant-network:
