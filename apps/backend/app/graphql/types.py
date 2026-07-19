@@ -14,7 +14,10 @@ class RegisterUserInput:
 class LoginUserInput:
     Email: str
     Password: str
-    
+@strawberry.input 
+class ClientMessage:
+    documentId:str
+    message:str
 @strawberry.type
 class UserType:
     Username: str
@@ -32,3 +35,9 @@ class MessageResponse:
     message: str
     error:Optional[str] = None # Optional field for error messages
   # Optional field for error messages
+  
+@strawberry.type
+class SuccessfulFileUploadMessage:
+    documentId:str
+    message:str = "File Uploaded Successfully"
+    error:Optional[str] = None
