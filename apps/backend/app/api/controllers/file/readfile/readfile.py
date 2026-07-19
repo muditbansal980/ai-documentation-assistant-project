@@ -1,6 +1,7 @@
 import pymupdf 
 from app.api.controllers.file.chunking.chunking_file import split_text_into_chunks
 from app.api.controllers.file.chunking.chunking_file import save_chunks_to_database
+from app.api.controllers.file.embeddings_generation.embeddings_gen import embeddings_gen
 async def extract_pdf_text(path: str, document_id: str):
 
     document = pymupdf.open(path)
@@ -30,4 +31,5 @@ async def extract_pdf_text(path: str, document_id: str):
                 }
             )
     await save_chunks_to_database(document_id=document_id, chunks=all_chunks)
+    embeddings_gen(all_chunks)
     return {"pages": pages, "chunks": all_chunks}
