@@ -2,8 +2,11 @@ import pymupdf
 from app.api.controllers.file.chunking.chunking_file import split_text_into_chunks
 from app.api.controllers.file.chunking.chunking_file import save_chunks_to_database
 from app.api.controllers.file.embeddings_generation.embeddings_gen import embeddings_gen
-async def extract_pdf_text(path: str, document_id: str):
-
+import strawberry
+from app.utils.auth.auth_utils import get_current_user
+async def extract_pdf_text(path: str, document_id: str, info: strawberry.Info):
+    # print("<-------------------extract_pdf_text controller called-------------------->\n\n\n\n")
+    user =get_current_user(info)
     document = pymupdf.open(path)
     text = ""
     pages = []
@@ -31,6 +34,8 @@ async def extract_pdf_text(path: str, document_id: str):
                     "document_id": document_id
                 }
             )
-    await save_chunks_to_database(document_id=document_id, chunks=all_chunks)
+    print("<-------------------All chunks generated-------------------->\n\n\n\n")
+    await save_chunks_to_database(document_id=document_id, chunks=all_chunks, user_id=user["sub"])
+    print("<-------------------All chunks saved to database-------------------->\n\n\n\n")
     await embeddings_gen(all_chunks)
     return {"pages": pages, "chunks": all_chunks}

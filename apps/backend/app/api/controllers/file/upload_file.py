@@ -5,7 +5,8 @@ from app.graphql.types import MessageResponse,SuccessfulFileUploadMessage
 from app.db.session import AsyncSessionLocal
 from app.models.file.upload_file import Document
 from app.api.controllers.file.readfile.readfile import extract_pdf_text
-async def UploadFile(file:Upload,user:dict):
+import strawberry
+async def UploadFile(file:Upload,user:dict,info:strawberry.Info):
     try:
         # Save the file metadata to the database
         content = await file.read()  # read once
@@ -28,7 +29,7 @@ async def UploadFile(file:Upload,user:dict):
                 # f.write(await file.read())
                 f.write(content)  # write the content read earlier
             # Extract text from the uploaded PDF
-            extracted_text = await extract_pdf_text(path, documentId)
+            extracted_text = await extract_pdf_text(path, documentId,info=info)
             # print(f"Extracted text from {file.filename}: {extracted_text}")
             print(
                 extracted_text["chunks"][0]
