@@ -13,6 +13,10 @@ mutation UploadFile(
             message
             statusCode
         }
+        ... on SuccessfulFileUploadMessage{
+            documentId
+            message
+        }
     }
 }
 `
