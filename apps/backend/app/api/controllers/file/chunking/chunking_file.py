@@ -12,12 +12,13 @@ def split_text_into_chunks(text: str):
     
     return chunks
 
-async def save_chunks_to_database(document_id: str, chunks: list):
+async def save_chunks_to_database(document_id: str, chunks: list, user_id: str):
     for chunk in chunks:
         async with AsyncSessionLocal() as session:
             chunk_record =DocumentChunks(
                 Id=str(uuid.uuid4()),
                 DocumentId=document_id,
+                UserId=user_id,
                 PageNumber=chunk["page"],
                 ChunkNumber=chunk["chunk_number"],  
                 ChunkText=chunk["text"]
