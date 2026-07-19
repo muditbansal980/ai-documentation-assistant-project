@@ -29,10 +29,14 @@ async def UploadFile(file:Upload,user:dict):
                 f.write(content)  # write the content read earlier
             # Extract text from the uploaded PDF
             extracted_text = await extract_pdf_text(path, documentId)
-            print(f"Extracted text from {file.filename}: {extracted_text}")
+            # print(f"Extracted text from {file.filename}: {extracted_text}")
+            print(
+                extracted_text["chunks"][0]
+            )
             return MessageResponse(
                 message="File uploaded successfully."
             )
+            
     except Exception as e:
         return MessageResponse(
             message="File upload failed.",
