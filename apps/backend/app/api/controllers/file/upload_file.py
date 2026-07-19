@@ -1,7 +1,7 @@
 
 import uuid
 from strawberry.file_uploads import Upload
-from app.graphql.types import MessageResponse
+from app.graphql.types import MessageResponse,SuccessfulFileUploadMessage
 from app.db.session import AsyncSessionLocal
 from app.models.file.upload_file import Document
 from app.api.controllers.file.readfile.readfile import extract_pdf_text
@@ -33,8 +33,8 @@ async def UploadFile(file:Upload,user:dict):
             print(
                 extracted_text["chunks"][0]
             )
-            return MessageResponse(
-                message="File uploaded successfully."
+            return SuccessfulFileUploadMessage(
+                documentId=documentId
             )
             
     except Exception as e:
