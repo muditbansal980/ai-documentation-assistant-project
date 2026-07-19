@@ -19,7 +19,7 @@ class FileMutation:
         if not user:
             return AuthError()  # uses default "Not authenticated" message
         
-        controller = await UploadFile(file,user) #returning SuccessfulFileUploadMessage(documentId=documentId)
+        controller = await UploadFile(file,user,info=info) #returning SuccessfulFileUploadMessage(documentId=documentId)
         if controller.error:
            return AuthError(message=controller.error, statusCode=400)
         return SuccessfulFileUploadMessage(
