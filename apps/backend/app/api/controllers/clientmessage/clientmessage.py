@@ -4,6 +4,7 @@ from app.models.client_message.client_message import ClientMessages
 from app.db.session import AsyncSessionLocal
 import uuid
 import strawberry
+from app.services.client_file_embeddings_matching.matching import ClientMessage_File_Matching
 async def ClientMessage(message:str,docId:str,info:strawberry.Info):
     try:
         print("<-------------------ClientMessage controller called-------------------->\n\n\n\n")
@@ -25,9 +26,14 @@ async def ClientMessage(message:str,docId:str,info:strawberry.Info):
                 Message=ClientMess,
                 Embeddings = embeddings
             )
-            print("Inserting client message into database\n\n\n\n")
+            # print("Inserting client message into database\n\n\n\n")
             session.add(Inserting)
             await session.commit()
-        print("Client message successfully embedded and inserted in db")
+        # print("Client message successfully embedded and inserted in db")
+        
+        # Call the ClientMessage_File_Matching function to match the client message with document chunks
+        matching_result = await ClientMessage_File_Matching(docId=DocumentId, info=info, clientMsgEmb=embeddings)
+        print("Matching result:", matching_result)
+        return {"message": "Client message successfully embedded and inserted in db"}
     except Exception as e:
         print("Error occured:-",e)
