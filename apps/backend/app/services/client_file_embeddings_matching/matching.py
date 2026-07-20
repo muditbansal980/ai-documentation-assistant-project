@@ -30,27 +30,20 @@ async def ClientMessage_File_Matching(
                         dc."DocumentId" = :docId
                         AND d."UserId" = :userId
                     ORDER BY similarity
+                    LIMIT 10
                 """),
                 {
                     "docId": docId,
                     "userId": user["sub"],
                     "embedding": str(clientMsgEmb)
                 }
+                
             )
 
             chunks = result.fetchall()
             print("<-------------------Matching result-------------------->\n\n\n\n")
-            print("Matching result:", chunks)
             print("<-------------------Matching result-------------------->\n\n\n\n")
-            return [
-                {
-                    "text": chunk.ChunkText,
-                    "page": chunk.PageNumber,
-                    "chunk": chunk.ChunkNumber,
-                    "distance": chunk.similarity
-                }
-                for chunk in chunks
-            ]
+            return("Matching result:", chunks) #context of the client message with the document chunks
 
     except Exception as e:
         print(e)
