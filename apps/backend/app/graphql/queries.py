@@ -24,7 +24,7 @@ class Query:
                                 ConversationalMessages.DocId == docId,
                                 ConversationalMessages.UserId == user["sub"],
                             )
-                            .order_by(ConversationalMessages.Id.desc())
+                            .order_by(ConversationalMessages.CreatedAt.asc())
                         )
                 result = await session.execute(stmt)
                 rows = result.scalars().all()
