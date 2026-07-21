@@ -1,6 +1,7 @@
 import strawberry
 from typing import Optional
 
+
 @strawberry.type
 class AuthError:
     message: str = "Not authenticated"
@@ -41,3 +42,10 @@ class SuccessfulFileUploadMessage:
     documentId:str
     message:str = "File Uploaded Successfully"
     error:Optional[str] = None
+@strawberry.type
+class ConversationalMessageType:
+    Id: str
+    DocId: str
+    UserId: str
+    Message: str
+    Response: str
