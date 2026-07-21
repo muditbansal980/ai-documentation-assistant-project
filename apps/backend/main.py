@@ -7,3 +7,4 @@ if __name__ == "__main__":
 
 
 # uv run uvicorn app.main:app --reload
+#"psycopg2>=2.9.12",
