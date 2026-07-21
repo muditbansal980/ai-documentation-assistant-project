@@ -49,3 +49,8 @@ class ConversationalMessageType:
     UserId: str
     Message: str
     Response: str
+@strawberry.type
+class DocumentType:
+    Id: str
+    UserId: str
+    OriginalFileName: str
