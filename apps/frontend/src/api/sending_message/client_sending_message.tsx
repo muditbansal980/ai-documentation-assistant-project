@@ -1,6 +1,6 @@
 import {BACKEND_URL} from "@/config/app"
 import {SENDING_MESSAGE_MUTATION} from "@/graphql/client/sending_message/sending_message"
-
+import { refresh } from 'next/cache'
 export async function SendingMessage(message:string, documentId: string) {
     const token = localStorage.getItem("auth_token");
     try {
@@ -24,7 +24,7 @@ export async function SendingMessage(message:string, documentId: string) {
             throw new Error("Failed to send message");
         }
         const data = await response.json();
-        alert("Message sent successfully: " + data.data.ClientMessage.message);
+        refresh(); // Refresh the page to fetch new messages after sending a message
         return data;
     } catch (error) {
         console.error("Error sending message:", error);
