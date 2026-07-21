@@ -4,6 +4,7 @@ from app.models.client_message.client_message import ClientMessages
 from app.models.conversation_messages.conversational_messages import ConversationalMessages
 from app.db.session import AsyncSessionLocal
 from app.api.controllers.llm.llm import generate_response
+from datetime import datetime, timezone
 import uuid
 import strawberry
 from app.services.client_file_embeddings_matching.matching import ClientMessage_File_Matching
@@ -47,7 +48,8 @@ async def ClientMessage(message:str,docId:str,info:strawberry.Info):
                 DocId=DocumentId,
                 UserId=User["sub"],
                 Message=ClientMess,
-                Response=providing_context
+                Response=providing_context,
+                CreatedAt=str(datetime.now(timezone.utc))
             )
             session.add(Inserting_Conv)
             await session.commit()
