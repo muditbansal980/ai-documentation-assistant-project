@@ -49,6 +49,7 @@ class ConversationalMessageType:
     UserId: str
     Message: str
     Response: str
+    CreatedAt: str
 @strawberry.type
 class DocumentType:
     Id: str
