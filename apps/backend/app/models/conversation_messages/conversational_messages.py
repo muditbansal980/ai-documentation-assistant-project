@@ -10,3 +10,4 @@ class ConversationalMessages(Base):
     UserId:Mapped[str] = mapped_column(String(50),nullable=False)
     Message:Mapped[str] = mapped_column(String,nullable=False)
     Response:Mapped[str] = mapped_column(String,nullable=True)
+    CreatedAt:Mapped[str] = mapped_column(String,nullable=True)
