@@ -1,6 +1,7 @@
 from .embeddings_generation.emb_gen_client import gen_emb_client
 from app.utils.auth.auth_utils import get_current_user
 from app.models.client_message.client_message import ClientMessages
+from app.models.conversation_messages.conversational_messages import ConversationalMessages
 from app.db.session import AsyncSessionLocal
 from app.api.controllers.llm.llm import generate_response
 import uuid
@@ -39,6 +40,17 @@ async def ClientMessage(message:str,docId:str,info:strawberry.Info):
         print("<-------------------Matching result-------------------->\n\n\n\n")
         context = [item[0] for item in matching_result[1]]
         providing_context = await generate_response(client_message=ClientMess, context=context)
+        
+        async with AsyncSessionLocal() as session:
+            Inserting_Conv = ConversationalMessages(
+                Id=str(uuid.uuid4()),
+                DocId=DocumentId,
+                UserId=User["sub"],
+                Message=ClientMess,
+                Response=providing_context
+            )
+            session.add(Inserting_Conv)
+            await session.commit()
         return {"message": "Client message successfully embedded and inserted in db and response generated"}
     except Exception as e:
         print("Error occured:-",e)
